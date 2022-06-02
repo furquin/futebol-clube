@@ -26,7 +26,7 @@ module.exports = {
       awayTeamGoals: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        field
+        field: 'away_team_goals',
       },
       inProgress: {
         type: Sequelize.INTEGER,
