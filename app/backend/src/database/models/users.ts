@@ -12,7 +12,6 @@ class Users extends Model {
 
   public password: string;
 }
-
 Users.init({
   id: {
     primaryKey: true,

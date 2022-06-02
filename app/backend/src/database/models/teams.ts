@@ -5,7 +5,6 @@ class Teams extends Model {
   public id: number;
 
   public teamName!: string;
-
 }
 
 Teams.init({
