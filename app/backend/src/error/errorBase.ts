@@ -1,5 +1,5 @@
 export default abstract class ErrorBase extends Error {
-  protected statusCode: number;
+  statusCode: number;
 
   constructor(message: string, statusCode: number) {
     super(message);
