@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
-class Matches extends Model {
+export default class Matches extends Model {
   public id: number;
 
   public homeTeam!: number;
