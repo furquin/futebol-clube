@@ -1,8 +1,23 @@
 import MatchesModel from '../database/models/matches';
+import TeamModel from '../database/models/teams';
 
 export default class TeamService {
   static async getAll(): Promise<any> {
-    const Matches = await MatchesModel.findAll();
+    const Matches = await MatchesModel.findAll({
+      include: [
+        { model: TeamModel,
+          as: 'teamHome',
+          attributes: {
+            exclude: ['id'],
+          } },
+        { model: TeamModel,
+          as: 'teamAway',
+          attributes: {
+            exclude: ['id'],
+          } },
+      ],
+
+    });
     return Matches;
   }
 
