@@ -8,14 +8,12 @@ export default class TeamService {
     this._teamModel = teamModel;
   }
 
-  async getAll(): Promise<ITeams[]> {
-    this._teamModel = new TeamModel();
+  static async getAll(): Promise<ITeams[]> {
     const teams = await TeamModel.findAll();
     return teams;
   }
 
-  async getById(id: number | string): Promise<ITeams | null> {
-    this._teamModel = new TeamModel();
+  static async getById(id: number | string): Promise<ITeams | null> {
     const teamId = await TeamModel.findByPk(id);
     return teamId;
   }

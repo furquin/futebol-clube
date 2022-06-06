@@ -4,7 +4,7 @@ import Unauthorized from '../error/unauthorized';
 import IUser from '../interface/IUser';
 
 export default class ValidateData {
-  public validLogin =
+  static validLogin =
   async (
     email: string,
     password: string,

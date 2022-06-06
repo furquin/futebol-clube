@@ -1,14 +1,8 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { Router } from 'express';
 import LoginController from '../controller/Login';
-import LoginService from '../service/Login';
-
-const loginService = new LoginService();
-const loginController = new LoginController(loginService);
 
 const login = Router();
 
 export default login
-  .post('/', (req: Request, res: Response, next: NextFunction) =>
-    loginController.login(req, res, next))
-  .get('/validate', (req: Request, res: Response, next: NextFunction) =>
-    loginController.validate(req, res, next));
+  .post('/', LoginController.login)
+  .get('/validate', LoginController.validate);
