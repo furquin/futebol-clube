@@ -27,7 +27,7 @@ export default class TokenService {
     return token;
   };
 
-  decodedToken = (token: string): object | string => {
+  decodedToken = (token: string): any => {
     const decode = verify(token, this._secret);
     return decode;
   };

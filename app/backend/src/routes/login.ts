@@ -9,4 +9,6 @@ const login = Router();
 
 export default login
   .post('/', (req: Request, res: Response, next: NextFunction) =>
-    loginController.login(req, res, next));
+    loginController.login(req, res, next))
+  .get('/validate', (req: Request, res: Response, next: NextFunction) =>
+    loginController.validate(req, res, next));
