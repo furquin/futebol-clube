@@ -1,8 +1,10 @@
+import Unauthorized from '../error/unauthorized';
 import MatchesModel from '../database/models/matches';
 import TeamModel from '../database/models/teams';
 import IMatches from '../interface/IMatches';
 import IDataMatches from '../interface/IDataMatches';
 import INewMatches from '../interface/INewMatches';
+import NotFound from '../error/notFound';
 
 export default class TeamService {
   static async getAll(): Promise<IMatches[]> {
@@ -49,9 +51,21 @@ export default class TeamService {
 
     let progress = 1;
     if (inProgress !== true) { progress = 0; }
+    if (homeTeam === awayTeam) {
+      throw new Unauthorized('It is not possible to create a match with two equal teams');
+    }
+    const homeTeamMatche = await TeamModel.findOne({ where: { id: homeTeam } });
+    const awayTeamMatche = await TeamModel.findOne({ where: { id: awayTeam } });
 
+    if (!homeTeamMatche || !awayTeamMatche) {
+      throw new NotFound('There is no team with such id!');
+    }
     const newMatches = await MatchesModel
       .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: progress });
     return newMatches;
+  }
+
+  static async finishMatches(id: number | string): Promise<void> {
+    await MatchesModel.update({ inProgress: 0 }, { where: { id } });
   }
 }

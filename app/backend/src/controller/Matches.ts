@@ -26,4 +26,16 @@ export default class TeamController {
       next(e);
     }
   }
+
+  static async finishMatches(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      await MatchesService.finishMatches(id);
+
+      return res.status(200).json({ message: 'Finished!' });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
