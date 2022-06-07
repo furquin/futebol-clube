@@ -5,23 +5,18 @@ import IMatches from '../interface/IMatches';
 import IDataMatches from '../interface/IDataMatches';
 import INewMatches from '../interface/INewMatches';
 import NotFound from '../error/notFound';
+import Ok from '../error/ok';
+import IGoals from '../interface/IGoals';
 
 export default class TeamService {
   static async getAll(): Promise<IMatches[]> {
     const Matches = await MatchesModel.findAll({
-      include: [
-        { model: TeamModel,
-          as: 'teamHome',
-          attributes: {
-            exclude: ['id'],
-          } },
-        { model: TeamModel,
-          as: 'teamAway',
-          attributes: {
-            exclude: ['id'],
-          } },
-      ],
-
+      include:
+        [{ model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+          {
+            model: TeamModel, as: 'teamAway', attributes: { exclude: ['id'] },
+          },
+        ],
     });
     return Matches;
   }
@@ -29,20 +24,15 @@ export default class TeamService {
   static async getByProgress(inProgress: any): Promise<IMatches[]> {
     let progress = 1;
     if (inProgress !== 'true') { progress = 0; }
-
-    const inProgressMatches = await MatchesModel.findAll({ where: { inProgress: progress },
-      include: [
-        { model: TeamModel,
-          as: 'teamHome',
-          attributes: {
-            exclude: ['id'],
-          } },
-        { model: TeamModel,
-          as: 'teamAway',
-          attributes: {
-            exclude: ['id'],
-          } },
-      ] });
+    const inProgressMatches = await MatchesModel.findAll({
+      where: { inProgress: progress },
+      include:
+        [{ model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+          {
+            model: TeamModel, as: 'teamAway', attributes: { exclude: ['id'] },
+          },
+        ],
+    });
     return inProgressMatches;
   }
 
@@ -67,5 +57,14 @@ export default class TeamService {
 
   static async finishMatches(id: number | string): Promise<void> {
     await MatchesModel.update({ inProgress: 0 }, { where: { id } });
+  }
+
+  static async updateGoals(id: number | string, goals: IGoals): Promise<void> {
+    const { homeTeamGoals, awayTeamGoals } = goals;
+    if (!homeTeamGoals || !awayTeamGoals) {
+      await this.finishMatches(id);
+      throw new Ok('finishMatche');
+    }
+    await MatchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
   }
 }

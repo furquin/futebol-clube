@@ -7,4 +7,5 @@ const matches = Router();
 export default matches
   .get('/', MatchesController.getAll)
   .post('/', Token.validate, MatchesController.newMatches)
-  .patch('/:id/finish', MatchesController.finishMatches);
+  .patch('/:id/finish', MatchesController.finishMatches)
+  .patch('/:id/', MatchesController.updateGoals);

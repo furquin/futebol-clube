@@ -38,4 +38,15 @@ export default class TeamController {
       next(e);
     }
   }
+
+  static async updateGoals(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await MatchesService.updateGoals(id, req.body);
+
+      return res.status(200).json({ message: 'Updated goals!' });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
