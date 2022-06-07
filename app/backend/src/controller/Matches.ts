@@ -16,4 +16,14 @@ export default class TeamController {
       next(e);
     }
   }
+
+  static async newMatches(req: Request, res: Response, next: NextFunction) {
+    try {
+      const newMatches = await MatchesService.newMatches(req.body);
+
+      return res.status(201).json(newMatches);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
