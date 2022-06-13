@@ -1,5 +1,5 @@
 import TeamService from './Teams';
-import MatchesModel from './Matches';
+import MatchesService from './Matches';
 
 import ITeams from '../interface/ITeams';
 import IMtaches from '../interface/IMatches';
@@ -50,7 +50,7 @@ export default class AwayLeaderBoardService {
   }
 
   static async leaderboards() {
-    const matches = await MatchesModel.getAll();
+    const matches = await MatchesService.getAll();
     const teams = await TeamService.getAll();
     return teams.map((team) => {
       matches.forEach((match) => { this.DataMatch(team, match); });
