@@ -1,7 +1,7 @@
 //!  arquivo consultado em: https://github.com/tryber/sd-016-a-trybe-futebol-clube/pull/49/files#diff-57ab5144c890b3a81652a03fedcae35bd1ac5f94a55a49735e262c3ca9117edb
 
 import TeamService from './Teams';
-import MatchesModel from './Matches';
+import MatchesService from './Matches';
 
 import ITeams from '../interface/ITeams';
 import IMtaches from '../interface/IMatches';
@@ -52,7 +52,7 @@ export default class HomeLeaderBoardService {
   }
 
   static async leaderboards() {
-    const matches = await MatchesModel.getAll();
+    const matches = await MatchesService.getAll();
     const teams = await TeamService.getAll();
     return teams.map((team) => {
       matches.forEach((match) => { this.DataMatch(team, match); });
