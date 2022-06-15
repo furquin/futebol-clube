@@ -1,12 +1,10 @@
-//!  arquivo consultado em: https://github.com/tryber/sd-016-a-trybe-futebol-clube/pull/49/files#diff-57ab5144c890b3a81652a03fedcae35bd1ac5f94a55a49735e262c3ca9117edb
-
 import TeamService from './Teams';
 import MatchesService from './Matches';
 
 import ITeams from '../interface/ITeams';
 import IMtaches from '../interface/IMatches';
 
-export default class HomeLeaderBoardService {
+export default class AwayLeaderBoardService {
   name: string;
   static totalPoints = 0;
   static totalGames = 0;
@@ -19,21 +17,21 @@ export default class HomeLeaderBoardService {
   static efficiency = 0;
 
   static async DataMatch(team: ITeams, matches: IMtaches) {
-    if (team.id === matches.homeTeam && !matches.inProgress) {
-      if (matches.homeTeamGoals > matches.awayTeamGoals) {
+    if (team.id === matches.awayTeam && !matches.inProgress) {
+      if (matches.awayTeamGoals > matches.homeTeamGoals) {
         this.totalPoints += 3;
         this.totalVictories += 1;
       }
-      if (matches.homeTeamGoals < matches.awayTeamGoals) {
+      if (matches.awayTeamGoals < matches.homeTeamGoals) {
         this.totalLosses += 1;
       }
-      if (matches.homeTeamGoals === matches.awayTeamGoals) {
+      if (matches.awayTeamGoals === matches.homeTeamGoals) {
         this.totalPoints += 1;
         this.totalDraws += 1;
       }
       this.totalGames += 1;
-      this.goalsFavor += matches.homeTeamGoals;
-      this.goalsOwn += matches.awayTeamGoals;
+      this.goalsFavor += matches.awayTeamGoals;
+      this.goalsOwn += matches.homeTeamGoals;
       this.goalsBalance = this.goalsFavor - this.goalsOwn;
       this.efficiency = Number(((this.totalPoints / (this.totalGames * 3)) * 100).toFixed(2));
     }

@@ -8,7 +8,7 @@ import NotFound from '../error/notFound';
 import Ok from '../error/ok';
 import IGoals from '../interface/IGoals';
 
-export default class TeamService {
+export default class MatchService {
   static async getAll(): Promise<IMatches[]> {
     const Matches = await MatchesModel.findAll({
       include:
