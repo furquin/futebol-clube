@@ -27,7 +27,7 @@ class App {
     this.app.use('/login', LoginRoute);
     this.app.use('/teams', TeamRoute);
     this.app.use('/matches', MatchesRoute);
-    this.app.use('/leaderboard/home', LeaderboardsRoute);
+    this.app.use('/leaderboard', LeaderboardsRoute);
 
     this.app.use(Error);
   }
