@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import AwayLeaderBoardsService from '../service/AwayLearderBoards';
+import AwayLeaderBoardsService from '../service/AwayLeaderBoards';
 
 export default class AwayLeaderboardsController {
   static async orderedLeaderboards(req: Request, res: Response, next: NextFunction) {
