@@ -6,7 +6,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 import UserModel from '../database/models/users';
 import IUser from "./mocks/UserMock"
-
+import * as JWT from "jsonwebtoken"
 import { Response } from 'superagent';
 
 chai.use(chaiHttp);
@@ -14,18 +14,17 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe('Testes rota de login', () => {
- let chaiHttpResponse: Response;
+  let chaiHttpResponse: Response;
+  let chaiHttpResponseJWT: Response
 
   beforeEach(async () => {
     sinon
       .stub(UserModel, "findOne")
-      .resolves({...IUser } as UserModel);
+      .resolves({ ...IUser } as UserModel);
   });
-
   afterEach(()=>{
     (UserModel.findOne as sinon.SinonStub).restore();
   })
-
   it('Consiga realizar login com sucesso', async () => {
     chaiHttpResponse = await chai
        .request(app)
@@ -124,6 +123,41 @@ describe('Testes rota de login', () => {
       expect(chaiHttpResponse.status).to.be.equal(400);
       expect(chaiHttpResponse.body).to.have.property('message')
       expect(chaiHttpResponse.body.message).to.be.equal('"email" must be a valid email')
+
+  });
+  it('Caso não exista token', async () => {
+    chaiHttpResponse = await chai
+       .request(app)
+       .get("/login/validate")
+
+      expect(chaiHttpResponse.status).to.be.equal(401);
+      expect(chaiHttpResponse.body).to.have.property('message')
+      expect(chaiHttpResponse.body.message).to.be.equal('Token not found')
+
+  });
+  it('Caso token seja válido', async () => {
+  beforeEach(() => {
+    sinon
+      .stub(JWT, "verify").resolves()
+  });
+
+  afterEach(()=>{
+    sinon.restore()
+  })
+    chaiHttpResponse = await chai
+      .request(app)
+      .post("/login")
+        .send({
+            email: "admin@admin.com",
+            password: "secret_admin"
+        })
+    chaiHttpResponseJWT = await chai
+      .request(app)
+      .get("/login/validate")
+      .set('Authorization', chaiHttpResponse.body.token)
+
+    expect(chaiHttpResponseJWT.status).to.be.equal(200)
+    expect(chaiHttpResponseJWT.body).to.be.equal('admin')
 
   });
 });
