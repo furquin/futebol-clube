@@ -69,7 +69,7 @@
 ```bash
     # Clonar repositório
 
-    $ git clone https://github.com/furquin/futebol-clube
+    $ git clone git@github.com:furquin/futebol-clube.git
 
     # Entrar no diretório
 
